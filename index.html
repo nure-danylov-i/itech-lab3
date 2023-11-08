@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="uk-UA">
+    <head>
+	<title>Лабораторна робота №3</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+    <header>
+	<h1>Сторінка для лабораторної роботи №3</h1>
+	<p>Виконав ст. гр. КІУКІ-21-3 Данилов Ілля</p>
+	<p>Варіант 6</p>
+    </header>
+    <main>
+	<h3>Розрахунок середнього стажу роботи</h3>
+	<form>
+	    <select id="select" multiple size="5" OnChange = "selectEmployee(event)">
+		<option value="0" selected>Співробітник №1</option>
+		<option value="1">Співробітник №2</option>
+		<option value="2">Співробітник №3</option>
+		<option value="3">Співробітник №4</option>
+		<option value="4">Співробітник №5</option>
+	    </select>
+	    <label for="name">Прізвище:</label>
+	    <input type="text" id="name"><br>
+	    <label for="date">Дата прийому:</label>
+	    <input type="date" id="date" min="1970-01-01" OnChange = "calcAvgYears()">
+	    <p id=result></p>
+	</form>
+    </main>
+    <footer>
+    </footer>
+    <script>
+	// Поле "Прізвище"
+	inputName = document.getElementById('name');
+	// Поле "Дата прийому"
+	inputDate = document.getElementById('date');
+	// Поле результату
+	resultElement = document.getElementById('result');
+
+	// Обмежуємо вибір користувача поточною датою
+	var today = new Date();
+	inputDate.setAttribute('max', today.toISOString().slice(0, 10));
+
+	// Масив даних про співробітників
+	var data = new Array()
+	for (let i = 0; i < 5; i++) {
+	  data.push({name: '', startDate: ''});
+	}
+
+	// Обраний співробітник
+	var index = document.getElementById('select').value;
+	
+
+	function selectEmployee(event) {
+	  // Завантажуємо прізвище робітника у масив
+	  data[index].name = inputName.value;
+	  // Оновлюємо індекс
+	  index = event.target.value;
+	  // Заповнюємо значення полів даними про обраного робітника
+	  inputName.value = data[index].name;
+	  inputDate.value = data[index].startDate;
+	}
+
+
+	function calcAvgYears (){
+	  // Завантажуємо дату прийому робітника (рядок) у масив
+	  data[index].startDate = inputDate.value;
+
+	  var sumYears = 0;
+	  var numEmployees = 0;
+
+	  for (let i = 0; i < data.length; i++) {
+	    // Перевіряємо тільки заповнені дати
+	    if (data[i].startDate !== '')
+	    {
+	      // Конвертуємо збережений рядок у дату
+	      startDate = new Date(data[i].startDate);
+	      // Обчислюємо стаж
+	      let diffMs = today.getTime() - startDate.getTime();
+	      // Конвернтуємо стаж у дату починаючи з 1970р.
+	      let diffDate = new Date(diffMs);
+	      // Отримуємо кількість років з 0
+	      let years = diffDate.getUTCFullYear() - 1970;
+	      sumYears += years;
+	      numEmployees++;
+	    }
+	  }
+
+	  if (numEmployees > 0)
+	  {
+	    let result = Math.round(sumYears / numEmployees);
+	    if (result > 0)
+	    {
+	      resultElement.innerText = 'Середній стаж роботи, років: ' + result;
+	    }
+	    else
+	    {
+	      resultElement.innerText = 'Cередній стаж роботи: менше 1 року';
+	    }
+	  }
+	  else
+	  {
+	    resultElement.innerText = '';
+	  }
+	}
+    </script>
+    </body>
+</html>

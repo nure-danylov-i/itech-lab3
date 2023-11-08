@@ -1,0 +1,18 @@
+body {
+    margin: auto;
+    max-width: 600px;
+    font-family: sans-serif;
+}
+
+form {
+    margin-top: 2em;
+}
+
+input {
+    margin: 0.5em;
+}
+
+select {
+    float: right;
+}
+
